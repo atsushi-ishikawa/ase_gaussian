@@ -362,7 +362,7 @@ for irxn in range(rxnst, rxned):
 
 		# spin switch
 		if int( math.ceil(sum(magmom)) )!=0:
-			print("has unpaired electron")
+			# has unpaired electron
 			ispin = 2
 		else:
 			ispin = 1

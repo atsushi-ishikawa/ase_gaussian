@@ -1,7 +1,7 @@
 import os,sys
 from reaction_tools import get_number_of_reaction
 
-# usage: submit.py inputfile [number of jobs]
+# usage: python submit.py inputfile [number of jobs]
 
 submit_sh = "run_kyushu.sh"
 argvs = sys.argv
@@ -27,18 +27,21 @@ os.system("rm std*")
 st = 0
 ed = 1
 
-last = False
+finish = False
 while True:
 	ed = st + each
 	if ed >= rxn_num:
-		ed = rxn_num
-		last = True
+		#
+		# the end reaction number is lager than rxn_num ... the last node
+		#
+		ed = rxn_num - 1 # adjustment: ed+1 -1 = rxnnum
+		finish = True
 
-	command = "pjsub -x \"INP={0}\" -x \"ST={1}\" -x \"ED={2}\" {3}".format(inp,st,ed,submit_sh)
+	command = "pjsub -x \"INP={0}\" -x \"ST={1}\" -x \"ED={2}\" {3}".format(inp, st, ed+1, submit_sh) # add one to include the last reaction
 	print(command)
 	os.system(command)
 
-	if last:
+	if finish:
 		break
 	st = ed + 1
 
